@@ -21,7 +21,7 @@ for (i=0; i<=MAX_I; i++) {
   x = dx*i;
   fx = sqrt(2./10)*sin(pi*x/10.);
   printf("  %i  %f  %f  \n", i, x, fx);
-
+  printf("  Now I printed\n");
 }
 
 }
