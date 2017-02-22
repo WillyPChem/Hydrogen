@@ -3,16 +3,42 @@
 #include<math.h>
 
 int main() {
+ 
  int i, n, l, q, m;
  int j, Norbs;
-int B[30][3];
+ // Array B is to hold information about the quantum numbers n, l, and m
+ // associated with a given orbital labelled with a single number.
+ // E.g. orbital 1 is the 1s orbital, it has n=1, l=0, m=0
+ int B[30][3];
+ double E[30];
+ // Consider n values from n=1 to n=4
+ int orb_number = 0;
+ for (n=1; n<=4; n++) {
 
-for (
+   for (l=0; l<n; l++) {
+
+     for (m=-l; m<=l; m++) {
+
+
+       B[orb_number][0] = n;
+       B[orb_number][1] = l;
+       B[orb_number][2] = m;
+       E[orb_number] = -13.6/(n*n);
+
+       printf(" orbital number %i  n=%i, l=%i, m=%i\n",orb_number,n,l,m);
+       printf(" Energy of orbital %i is %f\n",orb_number,E[orb_number]);
+       orb_number++;
+       
+
+
+     }
+   }
+ }
+} 
 
 
 
-
-for (i=0; i<30; i++) {
+/*for (i=0; i<30; i++) {
 for (n=1; n
  Norbs(n)=n*n;
  i=Norbs+1
@@ -35,4 +61,4 @@ for (i=0; i<5; i++) {
   printf("\n");
 } 
   
-}
+}*/
