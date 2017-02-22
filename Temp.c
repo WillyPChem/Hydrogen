@@ -51,7 +51,7 @@ for (i=0; i<30; i++) {
 
   for (j=0; j<30; j++) {
 
-    printf(" %i, %j, %n  %f  ",H[i][j]);
+    printf(" %f  ",H[i][j]);
 
   }
   printf("\n");
