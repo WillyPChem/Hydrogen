@@ -36,6 +36,31 @@ int main() {
  }
 } 
 
+double H[30][30];
+
+for (i=0; i<30; i++) {
+ 
+  
+  H[i][i] = E[i];
+
+  for (j=0; j<30; j++) {
+    if (i!=j) H[i][j] = 0.;
+  }
+}
+
+for (i=0; i<30; i++) {
+
+  for (j=0; j<30; j++) {
+
+    printf(" %i, %j, %n  %f  ",H[i][j]);
+
+  }
+  printf("\n");
+} 
+  
+}
+
+
 
 
 /*for (i=0; i<30; i++) {
