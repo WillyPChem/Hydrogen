@@ -1,48 +1,5 @@
 #include"Radial.h"
 
-// Bohr radius in SI units
-double a0_SI = 5.2917721067e-11;
-// Bohr radius in atomic units
-double a0 = 1.0;
-
-double pi = 3.14159265359;
-double Z = 1;  // Nuclear charge of hydrogen in atomic units
-double h = 1;  // Planck's constant in atomic units
-double m = 1;  // mass of electron in atomic units
-
-double L_Z_A(double x);
-double L_O_A(int alpha, double x);
-double L_KP1_A(int k, int alpha, double Lk, double Lkm1, double x);
-double Laguerre(int k, int alpha, double x);
-double Radial_Orb(int n, int l, double r);
-double factorial(int n);
-
-int main() {
-
-  int i, n, l;
-
-  double value, x, dvalue;
-  for (i=0; i<=1000; i++) {
-    //x = -2 + 0.1*i; 
-    //value = Laguerre( 3, 2, x);
-    //printf("  %f  %f \n",x,value);
-    x = 0 + 0.04*i;
-    double R10 = Radial_Orb(1,0,x);
-    double L21 = Laguerre( 2, 1, x);
-    //printf("  %f  %f  %f\n",x,R10, L21);
-
-    double R20 = Radial_Orb(2,0,x);
-    double R21 = Radial_Orb(2,1,x);
-    double R30 = Radial_Orb(3,0,x);
-    double R31 = Radial_Orb(3,1,x);
-    double R32 = Radial_Orb(3,2,x);
-    printf("  %f  %f  %f  %f  %f  %f %f\n",x,R10,R20,R21,R30,R31,R32);
-
-  }
-
-  return 0;
- }
-
 double L_Z_A(double x) {
 
   return 1.;
@@ -100,38 +57,32 @@ double Laguerre(int k, int alpha, double x) {
   }
 }
 
-//R_n,l(r) = sqrt( (n-1-l)!/(2*n*((n+l)!)^3) ) * (2/(n*a0))^{l+3/2} * r^l * exp(-r/(n*a0)) * L_{n+1}^{2l+1} (2*r/(n*a0))
+//R_n,l(r) = sqrt( (2/(n*a0))^3  * (n - l - 1)!/(2*n((n+l)!) ) )  * exp(-r/(n*a0)) * (2r/(n*a0))^l  L_{n-l-1}^{2l+1} (2*r/(n*a0))
 double Radial_Orb(int n, int l, double r) {
+  double a0 = 1.;
+  // Prefactor 1:  sqrt( (2/(n*a0))^3  * (n - l - 1)!/(2*n((n+l)!) ) )
+  double term1 = pow((2./(n*a0)),3.);
+  double term2a = factorial ( (n - l - 1) );
+  double term2b = 2*n*factorial(n+l);
+  double term2aob = term2a/term2b;
 
-  // Prefactor 1:  sqrt( (n-1-l)!/(2*n*((n+l)!)^3) )
-  double pre1, num, numfac, denom, denomfac;
-  num = (n - 1 - l);
-  numfac = factorial(num);
-  denomfac = factorial((n+1));
-  denom = 2*n*pow(denomfac,3);
-  pre1 = sqrt(numfac/denom);
-  //printf("  pre1 is %f\n",pre1);
-  // Prefactor 2: (2/(n*a0))^{l+3/2}
-  double pre2, arg2, pow2;
-  pow2 = l+3./2.;
-  arg2 = (2./(n*a0));
-  pre2 = pow(arg2,pow2);
-  //printf("  pre2 is %f\n",pre2);
-  // Term 1: r^l
-  double term1;
-  term1 = pow((2*r/n),l);
-  //printf("  term1 is %f\n",term1);
+  double pre1 = sqrt(term1*term2aob);
 
   // Term 2:  exp(-r/(n*a0))
   double term2;
   term2 = exp(-r/(n*a0));
-  //printf("  term2 is %f\n",term2);
-  // Term 3:  L_{n+1}^{2l+1} (2*r/(n*a0)) 
+
+  // Term 3: (2r/(n*a0))^l 
   double term3;
-  term3 = Laguerre( (n-l-1), (2*l+1), (2*r/(n*a0)) );
+  term3 = pow((2*r/n),l);
+  //printf("  term1 is %f\n",term1);
+
+  // Term 4:  L_{n+1}^{2l+1} (2*r/(n*a0)) 
+  double term4;
+  term4 = Laguerre( (n-l-1), (2*l+1), (2*r/(n*a0)) );
   //printf("  term3 is %f\n",term3);
 
-  return pre1*pre2*term1*term2*term3;
+  return pre1*term2*term3*term4;
 
 }
 
