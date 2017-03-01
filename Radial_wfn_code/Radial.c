@@ -1,6 +1,4 @@
-#include<stdio.h>
-#include<math.h>
-
+#include"Radial.h"
 
 // Bohr radius in SI units
 double a0_SI = 5.2917721067e-11;
