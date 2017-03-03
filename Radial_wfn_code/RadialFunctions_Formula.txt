@@ -6,7 +6,7 @@ R_10 * R_21  (Check! Both give 1.290266)
 
 R_10 * R_20  (Wolfram alpha gives -0.558702, and code gives -0.558702) 
 
-R_10 * R_32
+R_10 * R_32 
 
 R_30 * R_20
 
