@@ -27,8 +27,9 @@ for (i=0; i<=MAX_r; i++) {
 }
 
 printf("  Sum is %f\n",sum);
-int main() {
+
 } 
+int main {
  
 double AngularIntegral( int l, int m, int lp, int mp) {
 
