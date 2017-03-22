@@ -31,5 +31,13 @@ for (i=0; i<=MAX_r; i++) {
 printf("  Sum is %f\n",sum);
 
 } 
+
  
- 
+double AngularIntegral( int l, int m, int lp, int mp) {
+
+
+kroneckerDelta(m,mp)*(sqrt(((l+1)*(l+1)-(m*m))/(4*(l+1)*(l+1)-1))*kroneckerDelta(l,lp+1) + sqrt(((l*l-m*m)/(4*l*l-1))*kroneckerDelta(l,lp-1))
+
+return integral;
+                      }
+}
