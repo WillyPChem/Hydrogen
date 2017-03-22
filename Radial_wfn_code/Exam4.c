@@ -16,6 +16,13 @@ dr = 100./MAX_r;
 
 
 sum = 0.;
+int n=2;
+int l=1;
+int m=0;
+int np=1;
+int lp=0;
+int mp=0;
+
 for (i=0; i<=MAX_r; i++) {
  r = dr*i;
  // Set R10 equal to Radial Function R_1,0 - 1 s orbital
@@ -34,7 +41,7 @@ double dipole_integral = sum*AngularIntegral(l, m, lp, mp);
 
  
 
-double AngularIntegral( int l, int m, int lp, int mp) {
+/*double AngularIntegral( int l, int m, int lp, int mp) {
 
 double fl, flp;  
 
@@ -69,5 +76,5 @@ printf(" Angular Integral is %f\n",integral);
 return integral;
 
 }
-                
+               */ 
                 
