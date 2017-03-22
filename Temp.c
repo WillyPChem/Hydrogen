@@ -43,7 +43,18 @@ for (i=0; i<30; i++) {
   H[i][i] = E[i];
 
   for (j=0; j<30; j++) {
-    if (i!=j) H[i][j] = 0.;
+    if (i!=j) {
+
+     // get n, l, and m associated with orbital i
+     // get n', l', and m' associated with orbital j [Use B vector for this]
+     // duplicate code which calculated the radial integrals
+     // call angular integral function
+     // Multiply radial integral value by angular integral value
+     //  here you need to calculate the radial integral
+               //  and the angular integral for orbital i against orbital j
+               //  H[i][j] = 0.;
+
+    }
   }
 }
 
