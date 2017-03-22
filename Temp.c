@@ -4,7 +4,7 @@
 #include"Radial_wfn_code/Radial.h"
 int main() {
  
- int i, n, l, q, m;
+ int i, n, l, q, m, k;
  int j, Norbs;
  // Array B is to hold information about the quantum numbers n, l, and m
  // associated with a given orbital labelled with a single number.
@@ -52,6 +52,22 @@ for (i=0; i<30; i++) {
        np = B[j][0];
        lp = B[j][1];
        mp = B[j][2]; 
+     
+     
+     
+     for (k=0; k<=MAX_r; k++) {
+ r = dr*k;
+ // Set R10 equal to Radial Function R_1,0 - 1 s orbital
+ double R10 = Radial_Orb(n,l,r);
+ // set R20 equal to Radial Function R_2,1 - 2 p orbital
+ double R20 = Radial_Orb(np,lp,r);
+
+ fr = R10 * e * r * r* r * R20;
+ sum = sum + fr * dr;
+
+}
+
+printf("  Sum is %f\n",sum);
      // get n, l, and m associated with orbital i
      // get n', l', and m' associated with orbital j [Use B vector for this]
      // duplicate code which calculated the radial integrals
