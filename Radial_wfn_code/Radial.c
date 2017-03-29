@@ -110,13 +110,13 @@ double fl, flp, integral;
 
    if (l==(lp+1)){
      
-     fl = sqrt(((l+1.)*(l+1.)-(m*m))/(4.*(l+1.)*(l+1.)-1.));
+     fl = sqrt(((l+1.)*(l+1.)-(m*m))/(4.*((l+1.)*(l+1.))-1.));
    }
    else { fl = 0;}
 
    
    if (l==(lp-1)) {
-     flp = sqrt((((l*l)-(m*m))/((4.*l*l)-1.)));
+     flp = sqrt(((l*l)-(m*m))/(4.*(l*l)-1.));
     }
     else { flp = 0;}
   
