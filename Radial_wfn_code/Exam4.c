@@ -12,7 +12,7 @@ double complex Cdot[dim];
 double complex Ct[dim];
 double complex D[dim][dim];
 double mu[dim][dim];
-double dt = 0.00005;
+double dt = 0.001;
 
 void HdotC(double t);
 void RK3(double t);
@@ -164,7 +164,7 @@ double EField(double t) {
   double freq;
   freq = -0.5/4. + 0.5/1.;
 
-  return 0.005*cos(freq*t);
+  return 0.0001*cos(freq*t);
 
 }
 
