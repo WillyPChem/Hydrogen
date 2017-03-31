@@ -96,38 +96,183 @@ double factorial(int n) {
   return result;
 }
 
-double AngularIntegral( int l, int m, int lp, int mp) {
+void N_AngularIntegral(int li, int mi, int lf, int mf, double *mur, double *mui) {
+  int i, j, max;
 
-double fl, flp, integral;  
+  double theta, phi;
+  double dt, dp;
 
+  double Yri, Yrf, Yii, Yif;
+  double complex sum = 0. + 0*I;
+  double pi=4.*atan(1.0);
+  max = 5000;
 
+  dt = pi/max;
+  dp = 2*pi/max;
 
- //fl = 0;
- //flp = 0;
-  
- if (m==mp){
+  if (mi==mf && ( (lf-li)==1 || (li-lf)==1) ) {
+    for (i=0; i<=max; i++) {
 
+      theta = i*dt;
 
-   if (l==(lp+1)){
-     
-     fl = sqrt(((l+1.)*(l+1.)-(m*m))/(4.*((l+1.)*(l+1.))-1.));
-   }
-   else { fl = 0;}
+      //for (j=0; j<=max; j++) {
+        j=0;
+        phi = j*dp;
 
-   
-   if (l==(lp-1)) {
-     flp = sqrt(((l*l)-(m*m))/(4.*(l*l)-1.));
-    }
-    else { flp = 0;}
-  
+        Spherical_Y(li, mi, theta, phi, &Yri, &Yii);
+        Spherical_Y(lf, mf, theta, phi, &Yrf, &Yif);
+
+        sum += (Yri - I*Yii)*(Yrf + I*Yif)*cos(theta)*sin(theta)*dt;
+
+    //}
   }
- else { fl = 0;
-        flp = 0; }
 
+  *mur = 2*pi*creal(sum);
+  *mui = 2*pi*cimag(sum);
 
-integral = fl+flp;
-                
-printf(" Angular Integral is %f\n",integral);
-return integral;
+  }
+  else {
+  *mur = 0.;
+  *mui = 0.;
+  }
 
 }
+
+void Spherical_Y(int l, int m, double theta, double phi, double *YR, double *YI) {
+
+  int mp;
+  double ctheta, pfac, P;
+  double complex y;
+
+  mp = m;
+  // Legendre Polynomial function will only take positive values of m
+  if (m<0) {
+
+    mp = abs(m);
+  }
+
+  // Prefactor for Y
+  pfac = prefac( mp, l );
+
+  // cosine of theta
+  ctheta = cos(theta);
+
+  // Legendre Polynomial P_l^m (cos(theta))
+  P = plgndr( l, mp, ctheta);
+
+  // Spherical Harmonic = prefac*P_l^m(cos(theta))*exp(i*m*phi)
+  y = pfac*P*cexp(I*m*phi);
+
+  *YR = creal(y);
+  *YI = cimag(y);
+
+}
+
+double plgndr(int l, int m, double x) {
+//Computes the associated Legendre polynomial P m
+//l (x). Here m and l are integers satisfying
+//0 ≤ m ≤ l, while x lies in the range −1 ≤ x ≤ 1.
+//void nrerror(char error_text[]);
+
+  float fact,pll,pmm,pmmp1,somx2;
+
+  int i,ll;
+
+  if (m<0) m*=-1;
+
+  if (m < 0 || m > l || fabs(x) > 1.0) {
+  //if (m>l || fabs(x) > 1.0) {
+    printf("Bad arguments in routine plgndr\n");
+    printf("  l is %i and m is %i\n",l,m);
+    exit(0);
+  }
+
+  pmm=1.0;   //Compute P^m_m .
+
+  if (m > 0) {
+
+    somx2=sqrt((1.0-x)*(1.0+x));
+    fact=1.0;
+
+    for (i=1;i<=m;i++) {
+
+      pmm *= -fact*somx2;
+      fact += 2.0;
+
+    }
+  }
+
+  if (l == m)
+    return pmm;
+
+  else {    //Compute P^m_m+1
+
+    pmmp1=x*(2*m+1)*pmm;
+
+    if (l == (m+1))
+
+      return pmmp1;
+
+    else {   //Compute P^m_l, l>m+1
+
+      for (ll=m+2;ll<=l;ll++) {
+
+        pll=(x*(2*ll-1)*pmmp1-(ll+m-1)*pmm)/(ll-m);
+        pmm=pmmp1;
+        pmmp1=pll;
+
+     }
+
+     return pll;
+   }
+  }
+}
+
+
+double prefac(int m, int l) {
+
+
+  double p, num1, num2, denom1, denom2;
+  double pi=4.*atan(1.0);
+  num1 = 2*l+1;
+  num2 = factorial( (l-m) );
+
+  denom1 = 4*pi;
+  denom2 = factorial( (l+m) );
+
+
+  p = sqrt((num1/denom1)*(num2/denom2));
+
+  return p;
+
+}
+
+double Legendre(int l, int m, double theta) {
+
+
+  int mp;
+  double ctheta, pfac, P;
+  double y;
+
+  mp = m;
+  // Legendre Polynomial function will only take positive values of m
+  if (m<0) {
+
+     mp = abs(m);
+  }
+  // Prefactor 
+  pfac = prefac( mp, l );
+
+  // cosine of theta
+  ctheta = cos(theta);
+
+  // Legendre Polynomial P_l^m (cos(theta))
+  P = plgndr( l, mp, ctheta);
+
+  // Spherical Harmonic = prefac*P_l^m(cos(theta))*exp(i*m*phi)
+  y = pfac*P;
+
+  return y;
+}
+
+

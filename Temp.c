@@ -3,20 +3,23 @@
 #include<math.h>
 #include"Radial_wfn_code/Radial.h"
 int main() {
- 
+ int dim;
  int i, n, l, q, m, k, MAX_r;
+ int np, lp, mp;
  int j, Norbs;
- double r, dr, fr, e;
+ double sum, r, dr, fr, e;
  
  e = 1.0;
+ dim = 4;
+
  // Array B is to hold information about the quantum numbers n, l, and m
  // associated with a given orbital labelled with a single number.
  // E.g. orbital 1 is the 1s orbital, it has n=1, l=0, m=0
- int B[30][3];
- double E[30];
+ int B[dim][3];
+ double E[dim];
  // Consider n values from n=1 to n=4
  int orb_number = 0;
- for (n=1; n<=4; n++) {
+ for (n=1; n<=2; n++) {
 
    for (l=0; l<n; l++) {
 
@@ -38,14 +41,14 @@ int main() {
    }
  }
  
-
-double H[30][30];
-for (i=0; i<30; i++) {
+double mur, mui;
+double H[dim][dim];
+for (i=0; i<dim; i++) {
  
   
   H[i][i] = E[i];
 
-  for (j=0; j<30; j++) {
+  for (j=0; j<dim; j++) {
     if (i!=j) {
 
        n = B[i][0];
@@ -70,7 +73,9 @@ for (i=0; i<30; i++) {
        sum = sum + fr * dr;
 
      }
-     H[i][j] = sum*AngularIntegral(l, lp, m, mp);
+
+     N_AngularIntegral(l, m, lp, mp, &mur, &mui);
+     H[i][j] = sum*mur;
 
      // get n, l, and m associated with orbital i
      // get n', l', and m' associated with orbital j [Use B vector for this]
@@ -86,9 +91,9 @@ for (i=0; i<30; i++) {
 }
 
 // Making a small change
-for (i=0; i<30; i++) {
+for (i=0; i<dim; i++) {
 
-  for (j=0; j<30; j++) {
+  for (j=0; j<dim; j++) {
 
     printf(" %f  ",H[i][j]);
 
