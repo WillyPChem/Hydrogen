@@ -105,12 +105,17 @@ int main()    {
   FILE *fp;
   fp = fopen("dipoleMoment.txt","w");
   for (int M=0; M<50000; M++) {
-
+   
+    // Get current time
     Tim=M*dt;
+   
+    // Solve TDSE and update wavefunction
     RK3(Tim);
   
-    rho = 0.;
+    // Calculate dipole moment with current wavefunction
     dpm = DensityMatrix();
+   
+    // Print dipole moment to file
     fprintf(fp,"%12.10e  %12.10e\n",M*dt,dpm);
 
   }
