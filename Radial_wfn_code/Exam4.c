@@ -13,6 +13,16 @@ double complex Ct[dim];
 double complex D[dim][dim];
 double mu[dim][dim];
 double dt = 0.001;
+// sigma is related to the electric field
+// specifically, when the simulation time is equal to sigma, then
+// the laser amplitude will be zero
+// 804 atomic units of time is about 19 femto seconds
+double sigma = 804.0;
+
+// Good definition of pi
+double pi = 4.*atan(1.0);
+// Electric field amplitude in atomic units
+double Emax=0.04;
 
 void HdotC(double t);
 void RK3(double t);
@@ -176,11 +186,17 @@ void HdotC(double t) {
 //  Function that defines that laser field experienced
 //  by the molecule at time point t
 double EField(double t) {
-  double freq;
-  freq = -0.5/4. + 0.5/1.;
+  double freq, amplitude;
 
-  return 0.0001*cos(freq*t);
+  amplitude = Emax*cos(pi*t/(2*sigma))*cos(pi*t/(2*sigma)); 
 
+ double  freq1 = -0.5/4. + 0.5/1.;
+ double  freq2 = -0.5/9. + 0.5/4.;
+ double  freq3 = -0.5/16. + 0.5/9.;
+ 
+return  amplitude*(sin(freq1*t) + sin(freq2*t) + sin(freq3*t));
+
+  
 }
 // Updates wavefunction - aka solves TDSE 
 void RK3(double t) {
