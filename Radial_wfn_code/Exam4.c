@@ -101,21 +101,31 @@ int main()    {
   //HdotC(0);
 
   // Loop over time;
+  // Step 1:  Modify function EField to correspond to a laser pulse (as in 
+  //          the J. Phys. Chem article)
+  // Step 2:  Store each dipole moment in a vector with the same number
+  //          of elements as there are timesteps... currently, there are
+  //          50000 timesteps, so your vector must be 50000 elements long
+  //          Note that the Fourier transform expects a real and imaginary 
+  //          array of values, because your dipole moment is real, you will
+  //          probably want a parner array of imaginary values (which will all 
+  //          be zero) that must be 50000 elements long, as well
+  // Step 3:  Implement the Fourier transform routine and use it on your
+  //          array of dipole values.  The result can be used to compute 
+  //          the absorption spectrum
+
+  //          FourierTransform(double *dipole_real, double *dipole_imag, double *FT_real, double *FT_imag);
+  //          And absorption spectrum = FT_real*FT_real + FT_imag*FT_imag
   double Tim, rho, dpm;
   FILE *fp;
   fp = fopen("dipoleMoment.txt","w");
   for (int M=0; M<50000; M++) {
-   
-    // Get current time
+
     Tim=M*dt;
-   
-    // Solve TDSE and update wavefunction
     RK3(Tim);
   
-    // Calculate dipole moment with current wavefunction
+    rho = 0.;
     dpm = DensityMatrix();
-   
-    // Print dipole moment to file
     fprintf(fp,"%12.10e  %12.10e\n",M*dt,dpm);
 
   }
@@ -172,7 +182,7 @@ double EField(double t) {
   return 0.0001*cos(freq*t);
 
 }
-
+// Updates wavefunction - aka solves TDSE 
 void RK3(double t) {
   int i;
   // Need several arrays!
