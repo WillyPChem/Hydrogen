@@ -189,8 +189,10 @@ void HdotC(double t) {
 double EField(double t) {
   double freq, amplitude;
 
+  // Envelope function for pulse - can change
   amplitude = Emax*sin(pi*t/(2*sigma))*sin(pi*t/(2*sigma)); 
 
+ // Frequencies in pulse - can change these as well
  double  freq1 = -0.5/4. + 0.5/1.;
  double  freq2 = -0.5/9. + 0.5/4.;
  double  freq3 = -0.5/16. + 0.5/9.;
