@@ -17,7 +17,7 @@ double dt = 0.001;
 // specifically, when the simulation time is equal to sigma, then
 // the laser amplitude will be zero
 // 804 atomic units of time is about 19 femto seconds
-double sigma = 804.0;
+double sigma = 80.0;
 
 // Good definition of pi
 double pi = 4.*atan(1.0);
@@ -126,17 +126,18 @@ int main()    {
 
   //          FourierTransform(double *dipole_real, double *dipole_imag, double *FT_real, double *FT_imag);
   //          And absorption spectrum = FT_real*FT_real + FT_imag*FT_imag
-  double Tim, rho, dpm;
+  double Tim, rho, dpm, ef;
   FILE *fp;
-  fp = fopen("dipoleMoment.txt","w");
-  for (int M=0; M<50000; M++) {
+  fp = fopen("dipoleMoment_2.txt","w");
+  for (int M=0; M<500000; M++) {
 
     Tim=M*dt;
     RK3(Tim);
   
     rho = 0.;
     dpm = DensityMatrix();
-    fprintf(fp,"%12.10e  %12.10e\n",M*dt,dpm);
+    ef = EField(Tim);
+    fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,dpm,ef);
 
   }
 
@@ -188,13 +189,14 @@ void HdotC(double t) {
 double EField(double t) {
   double freq, amplitude;
 
-  amplitude = Emax*cos(pi*t/(2*sigma))*cos(pi*t/(2*sigma)); 
+  amplitude = Emax*sin(pi*t/(2*sigma))*sin(pi*t/(2*sigma)); 
 
  double  freq1 = -0.5/4. + 0.5/1.;
  double  freq2 = -0.5/9. + 0.5/4.;
  double  freq3 = -0.5/16. + 0.5/9.;
+ double ef = amplitude*(sin(freq1*t) + sin(freq2*t) + sin(freq3*t));
  
-return  amplitude*(sin(freq1*t) + sin(freq2*t) + sin(freq3*t));
+return  ef;
 
   
 }
