@@ -34,7 +34,8 @@ int main()    {
  int i, j, k;
  int n, l, m, np, lp, mp;
  double sum, r, dr, fr, e, R10, R20;
- double *mur, *mui;
+ double mur, mui;
+ double *dpr, *dpi;
  int orb_number;
  int MAX_TIME;
  
@@ -54,8 +55,8 @@ int main()    {
  dr = 200./MAX_r;
 
  // Dipole moment vector needs to be MAX_TIME long
- mur = (double *)malloc(MAX_TIME*sizeof(double));
- mui = (double *)malloc(MAX_TIME*sizeof(double));
+ dpr = (double *)malloc(MAX_TIME*sizeof(double));
+ dpi = (double *)malloc(MAX_TIME*sizeof(double));
  
  orb_number=0;
  // Initialize wavefunction vector as ground energy eigenstate
@@ -152,11 +153,11 @@ int main()    {
   
     rho = 0.;
     // Real part of dipole moment
-    mur[M] = DensityMatrix();
+    dpr[M] = DensityMatrix();
     // Dipole moment is real, imaginary part is zero
-    mui[M] = 0.;
+    dpi[M] = 0.;
     ef = EField(Tim);
-    fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,mur[M],ef);
+    fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,dpr[M],ef);
 
   }
 

@@ -17,7 +17,7 @@ set output 'Dipole_Plot_1.png'
 ## 'lw 2' means 'linewidth 2' which is wider than 'lw 1'
 ## You can specify a label for the data by typing title followed by 
 ## the label you want in quotation marks
-plot 'dipoleMoment.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
-'dipoleMoment.txt' u 1:3 w l lw 2 title 'Electric Field'
+plot 'dipoleMoment_2.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
+'dipoleMoment_2.txt' u 1:3 w l lw 2 title 'Electric Field'
 
 
