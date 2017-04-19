@@ -34,13 +34,29 @@ int main()    {
  int i, j, k;
  int n, l, m, np, lp, mp;
  double sum, r, dr, fr, e, R10, R20;
- double mur, mui;
+ double *mur, *mui;
  int orb_number;
-
+ int MAX_TIME;
+ 
+ // Maximum number of wavefunction updates is specified by MAX_TIME..
+ // the actual amount of time in the simulation will be equal to MAX_TIME*dt (time in atomic units)
+ // The simulation should proceed for at least enough time for the electrons to make their slowest orbital transition
+ // which corresponds to the smallest energy gap in the system... this will be the gap between orbitals
+ // with principle quantum number n=4 and n=5 -> delta E = 0.5 atomic units * (1/4^2 - 1/5^2) = 0.03125 atomic units
+ // The frequency of this transition is delta E/hbar = 0.03125 inverse atomic units of time
+ // The period is then 1/frequency = 1/0.03125 = 32 atomic units of time
+ // Therefore, MAX_TIME*dt >= 32 -> MAX_TIME >= 32/dt... for good measure, we will sample ten periods
+ double Min_deltaE = 0.5*(1./(4*4) - 1./(5*5));
+ double LongPeriod = 1./Min_deltaE;
+ MAX_TIME = 10*(int)(LongPeriod/dt); 
  e = 1.;
  int MAX_r = 1000;
  dr = 200./MAX_r;
 
+ // Dipole moment vector needs to be MAX_TIME long
+ mur = (double *)malloc(MAX_TIME*sizeof(double));
+ mui = (double *)malloc(MAX_TIME*sizeof(double));
+ 
  orb_number=0;
  // Initialize wavefunction vector as ground energy eigenstate
  C[orb_number] = 1. + 0.*I;
@@ -129,15 +145,18 @@ int main()    {
   double Tim, rho, dpm, ef;
   FILE *fp;
   fp = fopen("dipoleMoment_2.txt","w");
-  for (int M=0; M<500000; M++) {
+  for (int M=0; M<MAX_TIME; M++) {
 
     Tim=M*dt;
     RK3(Tim);
   
     rho = 0.;
-    dpm = DensityMatrix();
+    // Real part of dipole moment
+    mur[M] = DensityMatrix();
+    // Dipole moment is real, imaginary part is zero
+    mui[M] = 0.;
     ef = EField(Tim);
-    fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,dpm,ef);
+    fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,mur[M],ef);
 
   }
 
