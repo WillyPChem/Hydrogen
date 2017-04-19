@@ -4,6 +4,7 @@
 #include<Radial.h>
 
 const int dim = 55;
+int MAX_TIME;
 double H[dim][dim];
 double B[100][3];
 double E[dim];
@@ -36,8 +37,9 @@ int main()    {
  double sum, r, dr, fr, e, R10, R20;
  double mur, mui;
  double *dpr, *dpi;
+ double *spectrum_real, *spectrum_imag;
  int orb_number;
- int MAX_TIME;
+
  
  // Maximum number of wavefunction updates is specified by MAX_TIME..
  // the actual amount of time in the simulation will be equal to MAX_TIME*dt (time in atomic units)
@@ -57,7 +59,8 @@ int main()    {
  // Dipole moment vector needs to be MAX_TIME long
  dpr = (double *)malloc(MAX_TIME*sizeof(double));
  dpi = (double *)malloc(MAX_TIME*sizeof(double));
- 
+ spectrum_real = (double *)malloc(MAX_TIME*sizeof(double));
+ spectrum_imag = (double *)malloc(MAX_TIME*sizeof(double));
  orb_number=0;
  // Initialize wavefunction vector as ground energy eigenstate
  C[orb_number] = 1. + 0.*I;
@@ -162,7 +165,56 @@ int main()    {
   }
 
   fclose(fp);
+/* 
+ * Discrete Fourier transform
+ * by Project Nayuki, 2017. Public domain.
+ * https://www.nayuki.io/page/how-to-implement-the-discrete-fourier-transform
+ */
+ 
+ compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME);
+ FILE *absfp;
+ absfp = fopen("AbsorptionSpectrum.txt","w");
+ 
+  double OMEGA_min = 0.050;
+  double OMEGA_max = 1.;
+  double dOMEGA = (OMEGA_max - OMEGA_min)/MAX_TIME;
+ for (int i = 0; i < MAX_TIME; i++)
+    double OMEGA = dOMEGA * i + OMEGA_min;
+    double abs = spectrum_real[i]*spectrum_real[i] + spectrum_imag[i]*spectrum_imag[i];
+    fprintf(absfp," %12.10e  %12.10e\n",OMEGA, abs);
+}
+fclose(absfp);
+ // after you call compute_dft - print frequency, spectrum_real^2 + spectrum_imag^2
+ //void compute_dft(const double inreal[], const double inimag[], double outreal[], double outimag[], int n
 
+
+
+ 
+}
+  
+/* 
+ * Computes the discrete Fourier transform (DFT) of the given vector.
+ * All the array arguments must have the same length.
+ */
+void compute_dft(const double *inreal, const double *inimag, double *outreal, double *outimag, int n) {
+	for (int k = 0; k < n; k++) {  /* For each output element */
+		double sumreal = 0;
+		double sumimag = 0;
+  double OMEGA_min = 0.050;
+  double OMEGA_max = 1.;
+      double dOMEGA = (OMEGA_max - OMEGA_min)/MAX_TIME;
+      double OMEGA = dOMEGA * k + OMEGA_min;
+
+  double absor
+		for (int t = 0; t < n; t++) {  /* For each input element */
+			double angle = 2 * M_PI * t * OMEGA / n;
+			sumreal +=  inreal[t] * cos(angle) + inimag[t] * sin(angle);
+			sumimag += -inreal[t] * sin(angle) + inimag[t] * cos(angle);
+		}
+		outreal[k] = sumreal;
+		outimag[k] = sumimag;
+	}
+}
   // NOTE!!!  HERE YOU NEED TO CALL YOUR FOURIER TRANSFORM FUNCTION
   // AND YOU WILL GIVE IT THE dpr and dpi ARRAYS THAT WERE JUST COMPUTED ABOVE!
 
