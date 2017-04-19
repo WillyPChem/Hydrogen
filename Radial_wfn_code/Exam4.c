@@ -163,6 +163,9 @@ int main()    {
 
   fclose(fp);
 
+  // NOTE!!!  HERE YOU NEED TO CALL YOUR FOURIER TRANSFORM FUNCTION
+  // AND YOU WILL GIVE IT THE dpr and dpi ARRAYS THAT WERE JUST COMPUTED ABOVE!
+
     /*for (i=0; i<dim; i++) {
  
       //printf("  %12.10e  %12.10e\n",creal(C[i]),cimag(C[i]));
