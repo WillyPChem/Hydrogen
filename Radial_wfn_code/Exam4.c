@@ -185,7 +185,7 @@ compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME+10000);
   double OMEGA_min = 0.005;
   double OMEGA_max = 0.75;
   double dOMEGA = (OMEGA_max - OMEGA_min)/MaxFreq;
- for (int i = 0; i < MAX_TIME; i++) {
+ for (int i = 0; i < MaxFreq; i++) {
     double OMEGA = dOMEGA * i + OMEGA_min;
     double abs = spectrum_real[i]*spectrum_real[i] + spectrum_imag[i]*spectrum_imag[i];
     fprintf(absfp," %12.10e  %12.10e\n",OMEGA, abs);
