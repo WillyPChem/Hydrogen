@@ -23,7 +23,7 @@ double sigma = 80.0;
 // Good definition of pi
 double pi = 4.*atan(1.0);
 // Electric field amplitude in atomic units
-double Emax=0.0001;
+double Emax=0.004;
 
 void HdotC(double t);
 void RK3(double t);
@@ -267,17 +267,20 @@ double EField(double t) {
   double freq, amplitude;
 
   // Envelope function for pulse - can change
-  amplitude = Emax*sin(pi*t/(2*sigma))*sin(pi*t/(2*sigma)); 
-
- // Frequencies in pulse - can change these as well
- double  freq1 = -0.5/4. + 0.5/1.;
- double  freq2 = -0.5/9. + 0.5/4.;
- double  freq3 = -0.5/16. + 0.5/9.;
- double ef = amplitude*(sin(freq1*t) + sin(freq2*t) + sin(freq3*t));
+  if (t<sigma) {
+    amplitude = Emax*sin(pi*t/(2*sigma))*sin(pi*t/(2*sigma)); 
+  }
+  else {
+    amplitude = 0.;
+  }
+  // Frequencies in pulse - can change these as well
+  double  freq1 = -0.5/4. + 0.5/1.;
+  double  freq2 = -0.5/9. + 0.5/4.;
+  double  freq3 = -0.5/16. + 0.5/9.;
+  double ef = amplitude*(sin(freq1*t) + sin(freq2*t) + sin(freq3*t));
  
-return  ef;
+  return  ef;
 
-  
 }
 // Updates wavefunction - aka solves TDSE 
 void RK3(double t) {
