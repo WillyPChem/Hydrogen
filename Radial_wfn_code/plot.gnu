@@ -4,7 +4,7 @@
 set terminal png
 
 ## The name of the file you want your plot saved as... must end in .png
-set output 'Dipole_Plot_1.png'
+set output 'Dipole_Plot.png'
 
 ## The command to plot your datafile
 ## Syntax is plot followed by filename with your data in quotation marks
@@ -20,5 +20,5 @@ set output 'Dipole_Plot_1.png'
 plot 'dipoleMoment_2.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
 'dipoleMoment_2.txt' u 1:3 w l lw 2 title 'Electric Field'
 
-set output 'Abs.png'
+set output 'Absorption.png'
 plot 'AbsorptionSpectrum.txt' w l lw 2 title 'Absorption of H'
