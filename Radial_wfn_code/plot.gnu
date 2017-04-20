@@ -20,4 +20,5 @@ set output 'Dipole_Plot_1.png'
 plot 'dipoleMoment_2.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
 'dipoleMoment_2.txt' u 1:3 w l lw 2 title 'Electric Field'
 
-
+set output 'Abs.png'
+plot 'AbsorptionSpectrum.txt' w l lw 2 title 'Absorption of H'

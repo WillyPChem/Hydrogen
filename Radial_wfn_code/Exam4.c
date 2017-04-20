@@ -29,6 +29,7 @@ void HdotC(double t);
 void RK3(double t);
 double EField(double t);
 double DensityMatrix();
+void compute_dft(const double *inreal, const double *inimag, double *outreal, double *outimag, int n);
 
 int main()    {
 
@@ -171,14 +172,14 @@ int main()    {
  * https://www.nayuki.io/page/how-to-implement-the-discrete-fourier-transform
  */
  
- compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME);
+compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME);
  FILE *absfp;
  absfp = fopen("AbsorptionSpectrum.txt","w");
  
   double OMEGA_min = 0.050;
   double OMEGA_max = 1.;
   double dOMEGA = (OMEGA_max - OMEGA_min)/MAX_TIME;
- for (int i = 0; i < MAX_TIME; i++)
+ for (int i = 0; i < MAX_TIME; i++) {
     double OMEGA = dOMEGA * i + OMEGA_min;
     double abs = spectrum_real[i]*spectrum_real[i] + spectrum_imag[i]*spectrum_imag[i];
     fprintf(absfp," %12.10e  %12.10e\n",OMEGA, abs);
@@ -205,7 +206,6 @@ void compute_dft(const double *inreal, const double *inimag, double *outreal, do
       double dOMEGA = (OMEGA_max - OMEGA_min)/MAX_TIME;
       double OMEGA = dOMEGA * k + OMEGA_min;
 
-  double absor
 		for (int t = 0; t < n; t++) {  /* For each input element */
 			double angle = 2 * M_PI * t * OMEGA / n;
 			sumreal +=  inreal[t] * cos(angle) + inimag[t] * sin(angle);
@@ -237,7 +237,6 @@ void compute_dft(const double *inreal, const double *inimag, double *outreal, do
  }
  */
 
-}
 
 // i Cdot = (H - E(t)*mu) * C
 void HdotC(double t) {
