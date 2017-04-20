@@ -13,7 +13,7 @@ double complex Cdot[dim];
 double complex Ct[dim];
 double complex D[dim][dim];
 double mu[dim][dim];
-double dt = 0.001;
+double dt = 0.002;
 // sigma is related to the electric field
 // specifically, when the simulation time is equal to sigma, then
 // the laser amplitude will be zero
@@ -23,7 +23,7 @@ double sigma = 80.0;
 // Good definition of pi
 double pi = 4.*atan(1.0);
 // Electric field amplitude in atomic units
-double Emax=0.0004;
+double Emax=0.0001;
 
 void HdotC(double t);
 void RK3(double t);
@@ -52,7 +52,7 @@ int main()    {
  // Therefore, MAX_TIME*dt >= 32 -> MAX_TIME >= 32/dt... for good measure, we will sample ten periods
  double Min_deltaE = 0.5*(1./(4*4) - 1./(5*5));
  double LongPeriod = 1./Min_deltaE;
- MAX_TIME = 10*(int)(LongPeriod/dt); 
+ MAX_TIME = 5*(int)(LongPeriod/dt); 
  e = 1.;
  int MAX_r = 1000;
  dr = 200./MAX_r;
@@ -198,18 +198,21 @@ fclose(absfp);
  * All the array arguments must have the same length.
  */
 void compute_dft(const double *inreal, const double *inimag, double *outreal, double *outimag, int n) {
-	for (int k = 0; k < n; k++) {  /* For each output element */
-		double sumreal = 0;
-		double sumimag = 0;
-  double OMEGA_min = 0.050;
-  double OMEGA_max = 1.;
-      double dOMEGA = (OMEGA_max - OMEGA_min)/MAX_TIME;
-      double OMEGA = dOMEGA * k + OMEGA_min;
+        int MaxFreq = 1000;
+        double OMEGA_min = 0.050;
+        double OMEGA_max = 1.;
+        double dOMEGA = (OMEGA_max - OMEGA_min)/MaxFreq;
+        
+	for (int k = 0; k < MaxFreq; k++) {  /* For each output element */
+          double sumreal = 0;
+          double sumimag = 0;
+          double OMEGA = dOMEGA * k + OMEGA_min;
 
 		for (int t = 0; t < n; t++) {  /* For each input element */
-			double angle = 2 * M_PI * t * OMEGA / n;
-			sumreal +=  inreal[t] * cos(angle) + inimag[t] * sin(angle);
-			sumimag += -inreal[t] * sin(angle) + inimag[t] * cos(angle);
+                  double time = t*dt;
+		  double angle = time * OMEGA;
+		  sumreal +=  (inreal[t] * cos(angle) + inimag[t] * sin(angle))*dt;
+		  sumimag += (-inreal[t] * sin(angle) + inimag[t] * cos(angle))*dt;
 		}
 		outreal[k] = sumreal;
 		outimag[k] = sumimag;
