@@ -58,8 +58,8 @@ int main()    {
  dr = 200./MAX_r;
 
  // Dipole moment vector needs to be MAX_TIME long
- dpr = (double *)malloc(MAX_TIME*sizeof(double));
- dpi = (double *)malloc(MAX_TIME*sizeof(double));
+ dpr = (double *)malloc((MAX_TIME+10000)*sizeof(double));
+ dpi = (double *)malloc((MAX_TIME+10000)*sizeof(double));
  spectrum_real = (double *)malloc(MAX_TIME*sizeof(double));
  spectrum_imag = (double *)malloc(MAX_TIME*sizeof(double));
  orb_number=0;
@@ -164,15 +164,20 @@ int main()    {
     fprintf(fp,"%12.10e  %12.10e %12.10e\n",M*dt,dpr[M],ef);
 
   }
-
   fclose(fp);
+  // zero-pad dipole function
+  for (int i=MAX_TIME; i<10000; i++) {
+    dpr[i] = 0.;
+    dpi[i] = 0.;
+  }
+
 /* 
  * Discrete Fourier transform
  * by Project Nayuki, 2017. Public domain.
  * https://www.nayuki.io/page/how-to-implement-the-discrete-fourier-transform
  */
  
-compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME);
+compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME+10000);
  FILE *absfp;
  absfp = fopen("AbsorptionSpectrum.txt","w");
  
