@@ -18,7 +18,7 @@ double dt = 0.002;
 // specifically, when the simulation time is equal to sigma, then
 // the laser amplitude will be zero
 // 804 atomic units of time is about 19 femto seconds
-double sigma = 80.0;
+double sigma = 10.0;
 
 // Good definition of pi
 double pi = 4.*atan(1.0);
