@@ -4,7 +4,7 @@
 set terminal png
 
 ## The name of the file you want your plot saved as... must end in .png
-set output 'Dipole_Plot.png'
+set output 'Dipole_Plot_90.png'
 
 ## The command to plot your datafile
 ## Syntax is plot followed by filename with your data in quotation marks
