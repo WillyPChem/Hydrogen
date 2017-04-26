@@ -17,8 +17,8 @@ set output 'Dipole_Plot_90.png'
 ## 'lw 2' means 'linewidth 2' which is wider than 'lw 1'
 ## You can specify a label for the data by typing title followed by 
 ## the label you want in quotation marks
-plot 'dipoleMoment_2.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
-'dipoleMoment_2.txt' u 1:3 w l lw 2 title 'Electric Field'
+plot 'dipoleMoment_2_sigma_90.txt' u 1:2 w l lw 2 title 'Dipole Moment', \
+'dipoleMoment_2_sigma_90.txt' u 1:3 w l lw 2 title 'Electric Field'
 
 set output 'Absorption_sigma_90.png'
 plot 'AbsorptionSpectrum_sigma_90.txt' w l lw 2 title 'Absorption of H'
