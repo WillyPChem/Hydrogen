@@ -23,7 +23,7 @@ double sigma = 10.0;
 // Good definition of pi
 double pi = 4.*atan(1.0);
 // Electric field amplitude in atomic units
-double Emax=0.004;
+double Emax=0.04;
 
 void HdotC(double t);
 void RK3(double t);
