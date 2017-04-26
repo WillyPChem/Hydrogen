@@ -18,7 +18,7 @@ double dt = 0.002;
 // specifically, when the simulation time is equal to sigma, then
 // the laser amplitude will be zero
 // 804 atomic units of time is about 19 femto seconds
-double sigma = 10.0;
+double sigma = 120.0;
 
 // Good definition of pi
 double pi = 4.*atan(1.0);
@@ -149,7 +149,7 @@ int main()    {
   //          And absorption spectrum = FT_real*FT_real + FT_imag*FT_imag
   double Tim, rho, dpm, ef;
   FILE *fp;
-  fp = fopen("dipoleMoment_2.txt","w");
+  fp = fopen("dipoleMoment_2_sigma_120.txt","w");
   for (int M=0; M<MAX_TIME; M++) {
 
     Tim=M*dt;
@@ -179,7 +179,7 @@ int main()    {
  
 compute_dft(dpr, dpi, spectrum_real, spectrum_imag, MAX_TIME+10000);
  FILE *absfp;
- absfp = fopen("AbsorptionSpectrum.txt","w");
+ absfp = fopen("AbsorptionSpectrum_sigma_120.txt","w");
  
   int MaxFreq = 1000;
   double OMEGA_min = 0.005;
@@ -291,7 +291,7 @@ double EField(double t) {
 // Updates wavefunction - aka solves TDSE 
 void RK3(double t) {
   int i;
-  // Need several arrays!
+ // Need several arrays!
   double complex *k1, *k2, *k3, *c1;
   
   // allocate memory for them!
