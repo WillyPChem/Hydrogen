@@ -1,17 +1,14 @@
 LIB        = -L. -lm 
 INCLUDE    = -I.
 CFLAGS     = -O2
-EXEC       = rad.exe
+EXEC       = Hydrogen.exe
 CXX        = g++
 
-${EXEC}: Exam4.c Radial.o
-	${CXX} ${CFLAGS} ${INCLUDE} ${LIB} Exam4.c Radial.o -o ${EXEC}
+${EXEC}: Hydrogen_Simulator.c Radial.o
+	${CXX} ${CFLAGS} ${INCLUDE} ${LIB} Hydrogen_Simulator.c Radial.o -o ${EXEC}
 
 Radial.o: Radial.c Radial.h
 	${CXX} ${LIB} -c Radial.c ${CFLAGS}
 
 clean:
 	rm -f *.o
-
-%.o: $.cpp
-	${CXX} -c ${CFLAGS} ${INCL} -cpp -o $*.o $<

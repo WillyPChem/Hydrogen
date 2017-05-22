@@ -1,4 +1,0 @@
-#include <
-RadialWaveFunction[r_, n_Integer, 1_INteger] /;
- (n > 0 && 1 >= 0 && 1 < n) := 
-  2
